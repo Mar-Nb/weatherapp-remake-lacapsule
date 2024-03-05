@@ -8,7 +8,13 @@ import { CitiesModule } from './cities/cities.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), TrpcModule, MongooseModule.forRoot(process.env.DATABASE_URL || ''), CitiesModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot(),
+    TrpcModule,
+    MongooseModule.forRoot(process.env.DATABASE_URL || ''),
+    CitiesModule,
+    UsersModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

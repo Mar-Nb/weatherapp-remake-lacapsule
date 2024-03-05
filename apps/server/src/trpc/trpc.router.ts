@@ -2,12 +2,13 @@ import { INestApplication, Injectable } from '@nestjs/common';
 import { z } from 'zod';
 import { TrpcService } from '@server/trpc/trpc.service';
 import * as trpcExpress from '@trpc/server/adapters/express';
+import { CityRouter } from './city.router';
 
 @Injectable()
 export class TrpcRouter {
-  constructor(private readonly trpc: TrpcService) {}
+  constructor(private readonly trpc: TrpcService, private cityRouter: CityRouter) {}
 
-  appRouter = this.trpc.router({
+  mainRouter = this.trpc.router({
     hello: this.trpc.procedure
       .input(
         z.object({
@@ -22,6 +23,8 @@ export class TrpcRouter {
       }),
   });
 
+  appRouter = this.trpc.mergeRouters(this.mainRouter, this.cityRouter.router);
+
   async applyMiddleware(app: INestApplication) {
     app.use(
       `/trpc`,
@@ -33,5 +36,3 @@ export class TrpcRouter {
 }
 
 export type AppRouter = TrpcRouter[`appRouter`];
-
-

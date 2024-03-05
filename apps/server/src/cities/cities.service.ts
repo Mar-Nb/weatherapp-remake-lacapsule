@@ -5,7 +5,9 @@ import { Model } from 'mongoose';
 
 @Injectable()
 export class CitiesService {
-  constructor(@InjectModel(City.name) private readonly cityModel: Model<City>) {}
+  constructor(
+    @InjectModel(City.name) private readonly cityModel: Model<City>,
+  ) {}
 
   async create(city: City): Promise<City> {
     const newCity = new this.cityModel(city);
