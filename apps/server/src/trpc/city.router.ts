@@ -4,7 +4,10 @@ import { CitiesService } from '@server/cities/cities.service';
 
 @Injectable()
 export class CityRouter {
-  constructor(private readonly trpc: TrpcService, private citiesService: CitiesService) {}
+  constructor(
+    private readonly trpc: TrpcService,
+    private citiesService: CitiesService,
+  ) {}
 
   router = this.trpc.router({
     getAllCities: this.trpc.procedure.query(async () => {
@@ -12,4 +15,3 @@ export class CityRouter {
     }),
   });
 }
-

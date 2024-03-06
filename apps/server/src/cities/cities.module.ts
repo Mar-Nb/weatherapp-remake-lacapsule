@@ -10,6 +10,6 @@ import { City, CitySchema } from './city.schema';
   ],
   controllers: [CitiesController],
   providers: [CitiesService],
-  exports: [CitiesService]
+  exports: [CitiesService],
 })
 export class CitiesModule {}
