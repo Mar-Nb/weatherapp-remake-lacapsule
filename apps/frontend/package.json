@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "prepare": "panda codegen",
+    "dev": "rm -rf .next && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@pandacss/dev": "^0.34.3",
     "@trpc/client": "^10.45.1",
     "@trpc/server": "^10.45.1",
     "next": "14.1.0",
