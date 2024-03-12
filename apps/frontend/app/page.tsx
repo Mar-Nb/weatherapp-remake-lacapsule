@@ -1,5 +1,8 @@
 import { trpc } from "@frontend/app/trpc";
-import { css } from "@frontend/styled-system/css"
+import Card from "@frontend/components/Card";
+import Navbar from "@frontend/components/Navbar";
+import { css } from "@frontend/styled-system/css";
+import { Container, Flex } from "@frontend/styled-system/jsx";
 
 export default async function Home() {
   // const { greeting } = await trpc.hello.query({ name: 'Martin' });
@@ -7,16 +10,29 @@ export default async function Home() {
   const users = await trpc.getAllUsers.query();
 
   return (
-    <div>
-      <div className={css({ fontSize: "2xl", fontWeight: 'bold' })}>Hello 🐼!</div>
+    <Flex direction="column" height="full">
+      <Navbar />
 
-      <h2>getAllCities</h2>
-      <span>{JSON.stringify(cities)}</span>
+      <Container
+        bgGradient="to-t"
+        gradientFrom="stone.500"
+        gradientTo="stone.900"
+        height="full"
+      >
+        <div className={css({ fontSize: "2xl", fontWeight: "bold" })}>
+          Hello 🐼!
+        </div>
 
-      <hr /> 
+        <h2>getAllCities</h2>
+        <span>{JSON.stringify(cities)}</span>
 
-      <h2>getAllUsers</h2>
-      <span>{JSON.stringify(users)}</span>
-    </div>
+        <Card {...cities[0]} />
+
+        <hr />
+
+        <h2>getAllUsers</h2>
+        <span>{JSON.stringify(users)}</span>
+      </Container>
+    </Flex>
   );
 }
