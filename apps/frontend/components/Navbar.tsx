@@ -28,9 +28,15 @@ export default function Navbar({ search }: NavbarProps) {
           type="text"
           placeholder="Entrez le nom d'une ville"
           onChange={(e) => setSearchValue(e.target.value)}
+          value={searchValue}
         />
 
-        <button className={css({ pl: "4", cursor: "pointer" })} onClick={() => (async () => await search(searchValue))()}>
+        <button className={css({ pl: "4", cursor: "pointer" })} onClick={
+            async () => {
+            searchValue && await search(searchValue);
+            setSearchValue('');
+          }
+        }>
           <Circle
             p="3"
             className={css({ bg: { base: "blue.500", _hover: "blue.700" } })}

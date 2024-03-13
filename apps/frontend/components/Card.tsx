@@ -2,8 +2,14 @@ import { Divider, HStack, VStack } from "@frontend/styled-system/jsx";
 import { css } from "@frontend/styled-system/css";
 import { City } from "@server/cities/city.schema";
 import Image from "next/image";
+import { trpc } from "@frontend/app/trpc";
 
-export default function Card(props: City) {
+interface CardProps {
+  city: City;
+  rmCity: (id: string) => Promise<void>;
+}
+
+export default function Card({city, rmCity}: CardProps) {
   return (
     <VStack
       width="48"
@@ -25,7 +31,7 @@ export default function Card(props: City) {
             flexGrow: "1",
           })}
         >
-          {props.name}
+          {city.name}
         </span>
         <Image
           src="/close.svg"
@@ -36,22 +42,23 @@ export default function Card(props: City) {
             cursor: "pointer",
             opacity: { base: "1", _hover: "0.75" },
           })}
+          onClick={async () => await rmCity(city._id)}
         />
       </HStack>
 
       <Divider orientation="horizontal" color="white" mb="2" />
 
       <Image
-        src={`/${props.main.toLowerCase()}.png`}
-        alt={`${props.main}`}
+        src={`/${city.main.toLowerCase()}.png`}
+        alt={`${city.main}`}
         width={40}
         height={40}
       />
 
       <span className={css({ textTransform: "capitalize" })}>
-        {props.description}
+        {city.description}
       </span>
-      <span>{props.tempMin + "°C - " + props.tempMax + "°C"}</span>
+      <span>{city.tempMin + "°C - " + city.tempMax + "°C"}</span>
     </VStack>
   );
 }

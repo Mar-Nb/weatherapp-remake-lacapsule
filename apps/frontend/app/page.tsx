@@ -15,16 +15,17 @@ export default function Home() {
     setCities(data);
   })();
 
-  /*useEffect(() => {
-    (async () => {
-      const data = await trpc.getAllCities.query();
-      setCities(data);
-    })();
-  }, []);*/
-
   async function searchCity(city: string) {
     const newCity = await trpc.addCity.query(city);
     setCities(cities => [...cities, newCity]);
+  }
+
+  async function removeCity(cityId: string) {
+    const isDelete = await trpc.removeCity.query(cityId) !== null;
+    
+    if (isDelete) {
+      setCities(cities => cities.filter(city => city._id !== cityId));
+    }
   }
 
   return (
@@ -37,11 +38,12 @@ export default function Home() {
         gradientTo="stone.900"
         height="full"
         width="full"
-        pt="10"
+        py="10"
+        overflow="scroll"
       >
         <Center>
-          <Grid columns={5} gap="10">
-            {cities && cities.map((city, i) => <Card key={i} {...city} />)}
+          <Grid columns={5} gap="10"> 
+            {cities && cities.map((city, i) => <Card key={i} city={city} rmCity={removeCity} />)}
           </Grid>
         </Center>
       </Container>

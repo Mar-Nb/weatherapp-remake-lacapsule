@@ -15,7 +15,7 @@ export class CityRouter {
     getAllCities: this.trpc.procedure.query(async () => {
       return await this.citiesService.findAll();
     }),
-    addCity: this.trpc.procedure.input(z.string()).query(async({input}) => {
+    addCity: this.trpc.procedure.input(z.string()).query(async ({input}) => {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=${process.env.OWM_API_KEY}&units=metric`);
       const weatherData = await response.json();
       const newCity = new City(
@@ -33,6 +33,9 @@ export class CityRouter {
         console.error(error);
         throw new Error("Duplicate city");
       }
+    }),
+    removeCity: this.trpc.procedure.input(z.string()).query(async ({input}) => {
+      return await this.citiesService.remove(input);
     })
   });
 }
