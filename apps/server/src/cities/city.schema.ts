@@ -1,8 +1,8 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
 @Schema()
 export class City {
-  @Prop()
+  @Prop({ unique: true })
   name: string;
 
   @Prop()
@@ -16,6 +16,16 @@ export class City {
 
   @Prop()
   tempMax: number;
+
+  _id: string;
+
+  constructor(name: string, main: string, description: string, tempMin: number, tempMax: number) {
+    this.name = name;
+    this.main = main;
+    this.description = description;
+    this.tempMin = tempMin;
+    this.tempMax = tempMax;
+  }
 }
 
 export const CitySchema = SchemaFactory.createForClass(City);

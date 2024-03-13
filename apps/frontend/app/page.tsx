@@ -1,37 +1,49 @@
+"use client";
+
 import { trpc } from "@frontend/app/trpc";
 import Card from "@frontend/components/Card";
 import Navbar from "@frontend/components/Navbar";
-import { css } from "@frontend/styled-system/css";
-import { Container, Flex } from "@frontend/styled-system/jsx";
+import { Center, Container, Flex, Grid } from "@frontend/styled-system/jsx";
+import { City } from "@server/cities/city.schema";
+import { useState } from "react";
 
-export default async function Home() {
-  // const { greeting } = await trpc.hello.query({ name: 'Martin' });
-  const cities = await trpc.getAllCities.query();
-  const users = await trpc.getAllUsers.query();
+export default function Home() {
+  const [cities, setCities] = useState<City[]>([]);
+  
+  (async () => {
+    const data = await trpc.getAllCities.query();
+    setCities(data);
+  })();
+
+  /*useEffect(() => {
+    (async () => {
+      const data = await trpc.getAllCities.query();
+      setCities(data);
+    })();
+  }, []);*/
+
+  async function searchCity(city: string) {
+    const newCity = await trpc.addCity.query(city);
+    setCities(cities => [...cities, newCity]);
+  }
 
   return (
     <Flex direction="column" height="full">
-      <Navbar />
+      <Navbar search={searchCity} />
 
       <Container
         bgGradient="to-t"
         gradientFrom="stone.500"
         gradientTo="stone.900"
         height="full"
+        width="full"
+        pt="10"
       >
-        <div className={css({ fontSize: "2xl", fontWeight: "bold" })}>
-          Hello 🐼!
-        </div>
-
-        <h2>getAllCities</h2>
-        <span>{JSON.stringify(cities)}</span>
-
-        <Card {...cities[0]} />
-
-        <hr />
-
-        <h2>getAllUsers</h2>
-        <span>{JSON.stringify(users)}</span>
+        <Center>
+          <Grid columns={5} gap="10">
+            {cities && cities.map((city, i) => <Card key={i} {...city} />)}
+          </Grid>
+        </Center>
       </Container>
     </Flex>
   );

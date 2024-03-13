@@ -14,18 +14,6 @@ export class TrpcRouter {
   ) {}
 
   mainRouter = this.trpc.router({
-    hello: this.trpc.procedure
-      .input(
-        z.object({
-          name: z.string().optional(),
-        }),
-      )
-      .query(({ input }) => {
-        const { name } = input;
-        return {
-          greeting: `Hello ${name ? name : `Bilbo`}`,
-        };
-      }),
   });
 
   appRouter = this.trpc.mergeRouters(this.mainRouter, this.cityRouter.router, this.userRouter.router);

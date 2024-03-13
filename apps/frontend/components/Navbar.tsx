@@ -1,8 +1,15 @@
 import { Circle, HStack } from "@frontend/styled-system/jsx";
 import { css } from "@frontend/styled-system/css";
 import Image from "next/image";
+import { useState } from "react";
 
-export default function Navbar() {
+interface NavbarProps {
+  search: (value: string) => Promise<void>;
+}
+
+export default function Navbar({ search }: NavbarProps) {
+  const [searchValue, setSearchValue] = useState<string>('');
+  
   return (
     <HStack gap="12" p="4" bg="stone.900">
       <span className={css({ fontSize: "xl", fontWeight: "bold" })}>
@@ -20,9 +27,10 @@ export default function Navbar() {
           })}
           type="text"
           placeholder="Entrez le nom d'une ville"
+          onChange={(e) => setSearchValue(e.target.value)}
         />
 
-        <button className={css({ pl: "4", cursor: "pointer" })}>
+        <button className={css({ pl: "4", cursor: "pointer" })} onClick={() => (async () => await search(searchValue))()}>
           <Circle
             p="3"
             className={css({ bg: { base: "blue.500", _hover: "blue.700" } })}
