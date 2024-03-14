@@ -6,6 +6,7 @@ import Navbar from "@frontend/components/Navbar";
 import { Center, Container, Flex, Grid } from "@frontend/styled-system/jsx";
 import { City } from "@server/cities/city.schema";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [cities, setCities] = useState<City[]>([]);
@@ -42,9 +43,13 @@ export default function Home() {
         overflow="scroll"
       >
         <Center>
-          <Grid columns={5} gap="10"> 
-            {cities && cities.map((city, i) => <Card key={i} city={city} rmCity={removeCity} />)}
-          </Grid>
+          {!!cities.length && 
+            <Grid columns={5} gap="10">
+              { cities.map((c, i) => <Card key={i} city={c} rmCity={removeCity} />) }
+            </Grid>
+          }
+
+          {!cities.length && <Image src="/spinner.gif" alt="loader spinner" width={120} height={120} />}
         </Center>
       </Container>
     </Flex>

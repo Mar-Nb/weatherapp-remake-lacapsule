@@ -2,7 +2,6 @@ import { Divider, HStack, VStack } from "@frontend/styled-system/jsx";
 import { css } from "@frontend/styled-system/css";
 import { City } from "@server/cities/city.schema";
 import Image from "next/image";
-import { trpc } from "@frontend/app/trpc";
 
 interface CardProps {
   city: City;
