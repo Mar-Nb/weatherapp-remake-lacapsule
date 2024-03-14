@@ -3,12 +3,10 @@ import { TrpcService } from '@server/trpc/trpc.service';
 import { TrpcRouter } from './trpc.router';
 import { CityRouter } from './city.router';
 import { CitiesModule } from '@server/cities/cities.module';
-import { UsersModule } from '@server/users/users.module';
-import { UserRouter } from './user.router';
 
 @Module({
-  imports: [CitiesModule, UsersModule],
+  imports: [CitiesModule],
   controllers: [],
-  providers: [TrpcService, TrpcRouter, CityRouter, UserRouter],
+  providers: [TrpcService, TrpcRouter, CityRouter],
 })
 export class TrpcModule {}
