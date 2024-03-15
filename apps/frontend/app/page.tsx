@@ -11,27 +11,28 @@ import { toast } from "react-toastify";
 
 export default function Home() {
   const [cities, setCities] = useState<City[]>([]);
-  
-  useEffect( () => {
-  (async () => {
-    const data = await trpc.getAllCities.query();
-    setCities(data);
-  })()}, []);
+
+  useEffect(() => {
+    (async () => {
+      const data = await trpc.getAllCities.query();
+      setCities(data);
+    })();
+  }, []);
 
   async function searchCity(city: string) {
     try {
       const newCity = await trpc.addCity.query(city);
-      setCities(cities => [...cities, newCity]);
+      setCities((cities) => [...cities, newCity]);
     } catch (error) {
       toast.error((error as Error).message);
     }
   }
 
   async function removeCity(cityId: string) {
-    const isDelete = await trpc.removeCity.query(cityId) !== null;
-    
+    const isDelete = (await trpc.removeCity.query(cityId)) !== null;
+
     if (isDelete) {
-      setCities(cities => cities.filter(city => city._id !== cityId));
+      setCities((cities) => cities.filter((city) => city._id !== cityId));
     } else {
       toast.error("Problème lors de la suppression. Veuillez réessayer.");
     }
@@ -51,13 +52,22 @@ export default function Home() {
         overflow="scroll"
       >
         <Center>
-          {!!cities.length && 
+          {!!cities.length && (
             <Grid columns={5} gap="10">
-              { cities.map((c, i) => <Card key={i} city={c} rmCity={removeCity} />) }
+              {cities.map((c, i) => (
+                <Card key={i} city={c} rmCity={removeCity} />
+              ))}
             </Grid>
-          }
+          )}
 
-          {!cities.length && <Image src="/spinner.gif" alt="loader spinner" width={120} height={120} />}
+          {!cities.length && (
+            <Image
+              src="/spinner.gif"
+              alt="loader spinner"
+              width={120}
+              height={120}
+            />
+          )}
         </Center>
       </Container>
     </Flex>

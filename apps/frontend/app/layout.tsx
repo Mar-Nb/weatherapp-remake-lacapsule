@@ -22,7 +22,11 @@ export default function RootLayout({
     <html lang="fr">
       <body className={`${montserrat.className} ${css({ color: "white" })}`}>
         {children}
-        <ToastContainer bodyClassName={montserrat.className} theme="dark" transition={Zoom} />
+        <ToastContainer
+          bodyClassName={montserrat.className}
+          theme="dark"
+          transition={Zoom}
+        />
       </body>
     </html>
   );

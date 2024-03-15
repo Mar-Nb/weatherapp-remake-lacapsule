@@ -8,8 +8,8 @@ interface NavbarProps {
 }
 
 export default function Navbar({ search }: NavbarProps) {
-  const [searchValue, setSearchValue] = useState<string>('');
-  
+  const [searchValue, setSearchValue] = useState<string>("");
+
   return (
     <HStack gap="12" p="4" bg="stone.900">
       <span className={css({ fontSize: "xl", fontWeight: "bold" })}>
@@ -31,12 +31,13 @@ export default function Navbar({ search }: NavbarProps) {
           value={searchValue}
         />
 
-        <button className={css({ pl: "4", cursor: "pointer" })} onClick={
-            async () => {
-            searchValue && await search(searchValue);
-            setSearchValue('');
-          }
-        }>
+        <button
+          className={css({ pl: "4", cursor: "pointer" })}
+          onClick={async () => {
+            searchValue && (await search(searchValue));
+            setSearchValue("");
+          }}
+        >
           <Circle
             p="3"
             className={css({ bg: { base: "blue.500", _hover: "blue.700" } })}

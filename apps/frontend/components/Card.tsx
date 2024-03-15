@@ -8,7 +8,7 @@ interface CardProps {
   rmCity: (id: string) => Promise<void>;
 }
 
-export default function Card({city, rmCity}: CardProps) {
+export default function Card({ city, rmCity }: CardProps) {
   return (
     <VStack
       width="48"
