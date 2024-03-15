@@ -5,20 +5,26 @@ import Card from "@frontend/components/Card";
 import Navbar from "@frontend/components/Navbar";
 import { Center, Container, Flex, Grid } from "@frontend/styled-system/jsx";
 import { City } from "@server/cities/city.schema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const [cities, setCities] = useState<City[]>([]);
   
+  useEffect( () => {
   (async () => {
     const data = await trpc.getAllCities.query();
     setCities(data);
-  })();
+  })()}, []);
 
   async function searchCity(city: string) {
-    const newCity = await trpc.addCity.query(city);
-    setCities(cities => [...cities, newCity]);
+    try {
+      const newCity = await trpc.addCity.query(city);
+      setCities(cities => [...cities, newCity]);
+    } catch (error) {
+      toast.error((error as Error).message);
+    }
   }
 
   async function removeCity(cityId: string) {
@@ -26,6 +32,8 @@ export default function Home() {
     
     if (isDelete) {
       setCities(cities => cities.filter(city => city._id !== cityId));
+    } else {
+      toast.error("Problème lors de la suppression. Veuillez réessayer.");
     }
   }
 

@@ -18,6 +18,12 @@ export class CityRouter {
     addCity: this.trpc.procedure.input(z.string()).query(async ({input}) => {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input}&appid=${process.env.OWM_API_KEY}&units=metric`);
       const weatherData = await response.json();
+
+      // The searched city is not found
+      if (weatherData.message?.includes("not found")) {
+        throw new Error("La ville n'existe pas.");
+      }
+
       const newCity = new City(
         input,
         weatherData.weather[0].main,
@@ -30,8 +36,12 @@ export class CityRouter {
         const city = await this.citiesService.create(newCity);
         return city;
       } catch (error) {
-        console.error(error);
-        throw new Error("Duplicate city");
+        if (error.code === 11000) {
+          // Mongoose "Duplicate Key" error code
+          throw new Error("La ville existe déjà.");
+        }
+
+        throw new Error("Unknown error");
       }
     }),
     removeCity: this.trpc.procedure.input(z.string()).query(async ({input}) => {
